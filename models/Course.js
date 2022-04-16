@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const slugify=require('slugify');
 const schema=mongoose.Schema;
 
 
@@ -15,10 +16,20 @@ const courseShema=new schema({
     createdAt:{
         type:Date,
         default:Date.now
+    },
+    slug:{
+        type:String,
+        unique:true
     }
 });
 
-
+courseShema.pre('validate',function(next){
+    this.slug=slugify(this.name,{
+        lower:true,
+        strict:true
+    });
+    next();
+});
 const Course=mongoose.model('Course',courseShema);
 module.exports=Course;
 

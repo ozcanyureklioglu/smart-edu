@@ -18,17 +18,17 @@ mongoose.connect('mongodb://localhost/smartedu-db', {
 //MIDLEWARE
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 //TEMPLATE ENGİNE
 app.set('view engine','ejs');
 
-
-app.use(express.static('public'));
-
+//ROUTE
 app.use('/',pageRouter);
 app.use('/courses',courseRouter);
 
 
+//LISTEN SERVER ON 3000 PORT
 const port = 3000;
 
 app.listen(port, () => {
