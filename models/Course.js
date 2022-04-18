@@ -20,6 +20,10 @@ const courseShema=new schema({
     slug:{
         type:String,
         unique:true
+    },
+    category:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'category'
     }
 });
 

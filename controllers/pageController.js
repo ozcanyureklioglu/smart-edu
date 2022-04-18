@@ -10,6 +10,18 @@ exports.pageAboutControl = (req, res) => {
   });
 };
 
+exports.pageRegisterControl = (req, res) => {
+  res.status(200).render('register', {
+    page_name: 'register',
+  });
+};
+
+exports.pageLoginControl = (req, res) => {
+  res.status(200).render('login', {
+    page_name: 'login',
+  });
+};
+
 
 
 
