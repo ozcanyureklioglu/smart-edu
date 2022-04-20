@@ -17,6 +17,10 @@ const userShema=new schema({
     password:{
         type:String,
         required:true
+    },
+    role:{
+        type: String,
+        enum:['Student','Teacher','Admin']
     }
 });
 

@@ -1,16 +1,16 @@
 const User = require('../models/User');
+const Category=require('../models/Category');
+const Course=require('../models/Course');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const { redirect } = require('express/lib/response');
 
 exports.createUser = async (req, res) => {
-  const user = await User.create(req.body);
 
+  const user = await User.create(req.body);
+  console.log(req.body.role);
   try {
-    res.status(201).render('/',{
-      page_name:'dashboard',
-      
-    });
+    res.status(201).redirect('/');
   } catch (error) {
     res.status(400).json({
       status: 'failed',
@@ -50,12 +50,18 @@ exports.logoutUser = async (req, res) => {
     res.redirect('/');
   });
 };
+
 exports.dashboardUser = async (req, res) => {
 
   const user =await User.findOne({_id:userID});
+  const category=await Category.find();
+  const courses=await Course.find({user:req.session.userID});
+  
 
   res.render('dashboard', {
     page_name:"dashboard",
-    user
+    user,
+    category,
+    courses
   });
 };

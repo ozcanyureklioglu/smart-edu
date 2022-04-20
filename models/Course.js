@@ -24,6 +24,10 @@ const courseShema=new schema({
     category:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'category'
+    },
+    user:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 });
 
