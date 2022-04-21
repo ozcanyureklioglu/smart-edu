@@ -21,7 +21,11 @@ const userShema=new schema({
     role:{
         type: String,
         enum:['Student','Teacher','Admin']
-    }
+    },
+    courses:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Course'
+    }]
 });
 
 userShema.pre('save',function(next){

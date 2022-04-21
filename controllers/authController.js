@@ -53,7 +53,7 @@ exports.logoutUser = async (req, res) => {
 
 exports.dashboardUser = async (req, res) => {
 
-  const user =await User.findOne({_id:userID});
+  const user =await User.findOne({_id:userID}).populate('courses');
   const category=await Category.find();
   const courses=await Course.find({user:req.session.userID});
   
