@@ -26,7 +26,9 @@ if(user) { %> <% if(user.role === "Student"){ %>
         </div>
       </div>
       <!-- end col -->
+      
     </div>
+    
     <!-- end row -->
     <div class="row mt-5">
 
@@ -73,8 +75,13 @@ if(user) { %> <% if(user.role === "Student"){ %>
 </div>
 <div id="overviews" class="section wb">
   <div class="container">
+    <% if (flashMessages) { %> <% if (flashMessages.success) { %>
+      <div class="alert alert-success"><%= flashMessages.success %></div>
+      <% } else if (flashMessages.error) { %>
+      <div class="alert alert-danger"><%= flashMessages.error %></div>
+      <% } %> <% } %>
     <div class="row">
-
+      
       <!-- Modal Button -->
       <div class="col-lg-12 text-center">
         <button
@@ -105,8 +112,12 @@ if(user) { %> <% if(user.role === "Student"){ %>
       <!-- end col -->
     </div>
     <!-- end row -->
+    
+      
+    
 
     <div class="row mt-5">
+      
 
       <% for(let i=0;i<courses.length;i++){ %>
       <div class="col-lg-6 col-md-6 col-12">
@@ -123,8 +134,91 @@ if(user) { %> <% if(user.role === "Student"){ %>
                 <%= courses[i].description %>
               </p>
             </div>
+            <div class="clearfix">
+              <ul style="list-style-type: none;">
+                <li style="float: left;"><button class="btn btn-primary rounded-0 text-white"
+                  data-toggle="modal" data-target="#updateCourse<%= courses[i].slug %>"
+                  ><span>UPDATE</span></button></li>
+                <li style="float: right;"><a href="/courses/<%= courses[i].slug %>?_method=DELETE" 
+                  onclick="return confirm('ARE YOU SURE')"
+                  class="btn btn-danger rounded-0 text-white"><span>DELETE</span></a></li>
+              </ul>
+            </div>
           </div>
         </div>
+      </div>
+      <!-- UPDATE MODAL-->
+      <div
+      class="modal fade"
+      id="updateCourse<%= courses[i].slug %>"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      >
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-body customer-box">
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div class="tab-pane active" id="Login">
+                <form method="POST" action="/courses/<%= courses[i].slug %>?_method=PUT" class="form-horizontal">
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <input
+                        type="text"
+                        name="name"
+                        value="<%= courses[i].name %>"
+                        class="form-control"
+                        placeholder="Course Name"
+                      />
+                    </div>
+                  </div>
+                  
+
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <textarea
+                        rows="8"
+                        name="description"
+                        class="form-control"
+                        placeholder="Course Description"
+                        required
+                      ><%= courses[i].description %></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <select class="form-control" name="category">
+                        <% for(let i=0;i<category.length;i++){ %>
+                <option value="<%= category[i]._id %>"> <%= category[i].name %> </option>
+              <% } %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-10">
+                      <button
+                        type="submit"
+                        class="btn btn-light btn-radius btn-brd grd1"
+                      >
+                        Submit
+                      </button>
+                      <button
+                        type="submit"
+                        class="btn btn-light btn-radius btn-brd grd1"
+                        data-dismiss="modal"
+                        aria-hidden="true"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       </div>
       <% } %>
       <!-- end col -->
@@ -140,7 +234,7 @@ if(user) { %> <% if(user.role === "Student"){ %>
 
 
 
-
+<!-- ADD MODAL-->
 <div
   class="modal fade"
   id="addCourse"

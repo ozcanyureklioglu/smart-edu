@@ -7,6 +7,8 @@ const router=express.Router();
 router.route('/').post(roleMiddle(['Teacher','Admin']), courseControl.createCourse);
 router.route('/').get(courseControl.getAllCourses);
 router.route('/:slug').get(courseControl.getCourse);
+router.route('/:slug').delete(courseControl.deleteCourse);
+router.route('/:slug').put(courseControl.updateCourse);
 router.route('/enroll').post(courseControl.enrollCourse);
 router.route('/release').post(courseControl.releaseCourse);
 

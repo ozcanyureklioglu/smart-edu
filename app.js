@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const MongoStore=require('connect-mongo');
-const session=require('express-session');
+const MongoStore = require('connect-mongo');
+const session = require('express-session');
+const flash = require('connect-flash');
+const methodOverride=require('method-override');
 const pageRouter = require('./routes/pageRoute');
 const courseRouter = require('./routes/courseRoute');
 const categoryRouter = require('./routes/categoryRoute');
@@ -30,7 +32,17 @@ app.use(
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: 'mongodb://localhost/smartedu-db' })
+    store: MongoStore.create({ mongoUrl: 'mongodb://localhost/smartedu-db' }),
+  })
+);
+app.use(flash());
+app.use((req, res, next) => {
+  res.locals.flashMessages=req.flash();
+  next();
+});
+app.use(
+  methodOverride('_method', {
+    methods: ['POST', 'GET'],
   })
 );
 
@@ -39,7 +51,7 @@ app.set('view engine', 'ejs');
 
 //ROUTE
 app.use('*', (req, res, next) => {
-  userID=req.session.userID;
+  userID = req.session.userID;
   next();
 });
 app.use('/', pageRouter);

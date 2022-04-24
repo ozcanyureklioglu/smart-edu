@@ -4,18 +4,23 @@ const Course=require('../models/Course');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const { redirect } = require('express/lib/response');
+const { validationResult } = require('express-validator');
 
 exports.createUser = async (req, res) => {
 
-  const user = await User.create(req.body);
-  console.log(req.body.role);
+  
+  
   try {
-    res.status(201).redirect('/');
+    const user = await User.create(req.body);
+    req.flash("success", "Register is succesfully");
+    res.status(201).redirect('/login');
+    
   } catch (error) {
-    res.status(400).json({
-      status: 'failed',
-      error,
-    });
+
+    req.flash("error", "Something happened");
+    res.status(400).redirect('/register');
+
+
   }
 };
 
@@ -30,11 +35,13 @@ exports.loginUser = (req, res) => {
             req.session.userID = user._id;
             res.status(200).redirect('/users/dashboard');
           } else {
-            res.status(404).send('Password is wrong');
+            req.flash("wpass", "Password is wrong");
+            res.status(400).redirect('/login');
           }
         });
       } else {
-        res.status(404).send('User is not found');
+        req.flash("nouser", "User is not found");
+        res.status(404).redirect('/login');
       }
     });
   } catch (error) {
